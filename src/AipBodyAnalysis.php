@@ -15,7 +15,8 @@
 * the License.
 */
 
-require_once 'lib/AipBase.php';
+namespace BaiduAip;
+use BaiduAip\lib\AipBase;
 class AipBodyAnalysis extends AipBase {
 
     /**
