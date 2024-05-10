@@ -21,15 +21,19 @@ namespace BaiduAip\lib;
  */
 class AipHttpClient{
 
+    protected $headers =[];
+    protected $connectTimeout =60000 ;
+    protected $socketTimeout =60000 ;
+    protected $conf =[];
     /**
      * HttpClient
      * @param array $headers HTTP header
      */
-    public function __construct($headers=array()){
+    public function __construct($headers=[]){
         $this->headers = $this->buildHeaders($headers);
         $this->connectTimeout = 60000;
         $this->socketTimeout = 60000;
-        $this->conf = array();
+        $this->conf = [];
     }
 
     /**

@@ -15,7 +15,7 @@
 * the License.
 */
 namespace BaiduAip\lib;
-
+use Exception;
 
 /**
  * Aip Base 基类
@@ -51,6 +51,32 @@ class AipBase {
      * @var string
      */
     protected $secretKey = '';
+
+    /**
+     * isCloudUser
+     * @var string
+     */
+    protected $isCloudUser =  null;
+
+    /**
+     * client
+     * @var AipHttpClient
+     */
+    protected $client    = null;
+
+    /**
+     * 版本号
+     * @var string
+     */
+    protected $version = '2_2_20';
+
+    /**
+     * 代理
+     * @var array
+     */
+    protected $proxies = [];
+
+
 
     /**
      * 权限
