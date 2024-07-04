@@ -1,6 +1,6 @@
 {
     "name": "efarsoft/baidu-aip",
-    "description": "baidu pulic ai php sdk for composer",
+    "description": "PHP SDK for BaiduAip",
     "authors": [
         {
             "name": "Efarsoft",
@@ -16,10 +16,5 @@
             "BaiduAip\\":"src/"
         }
     }, 
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.01"
-        }
-    }
-
+    "minimum-stability": "dev"
 }
