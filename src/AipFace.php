@@ -17,6 +17,21 @@
 namespace BaiduAip;
 use BaiduAip\lib\AipBase;
 class AipFace extends AipBase {
+    /**
+     * @var string
+     */
+    private $onlinePictureLiveUrlV4 = 'https://aip.baidubce.com/rest/2.0/face/v4/faceverify';
+
+    /**
+     * @var string
+     */
+    private $faceMatchV4Url = 'https://aip.baidubce.com/rest/2.0/face/v4/mingjing/match';
+
+    /**
+     * @var string
+     */
+    private $verifyUrl = 'https://aip.baidubce.com/rest/2.0/face/v4/mingjing/verify';
+
 
     /**
      * 人脸检测 detect api url
@@ -114,8 +129,21 @@ class AipFace extends AipBase {
      */
     private $videoSessioncodeUrl = 'https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/sessioncode';
 
-    
+    private $facelivenessVerifyV1Url = 'https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/verify';
 
+
+    private $facePersonIdmatchV3Url = 'https://aip.baidubce.com/rest/2.0/face/v3/person/idmatch';
+    private $faceMergeV1Url = 'https://aip.baidubce.com/rest/2.0/face/v1/merge';
+    private $faceSkinSmoothV1Url = 'https://aip.baidubce.com/rest/2.0/face/v1/editattr';
+    private $faceLandmarkV1Url = 'https://aip.baidubce.com/rest/2.0/face/v1/landmark';
+    private $faceSceneFacesetUserAddUrl = 'https://aip.baidubce.com/rest/2.0/face/scene/faceset/user/add';
+    private $faceSceneFacesetUserUpdateUrl = 'https://aip.baidubce.com/rest/2.0/face/scene/faceset/user/update';
+    private $faceSceneFacesetGroupAddUrl = 'https://aip.baidubce.com/rest/2.0/face/scene/faceset/group/add';
+    private $faceCaptureSearchUrl = 'https://aip.baidubce.com/rest/2.0/face/capture/search';
+    private $faceIdmatchDateV4Url = 'https://aip.baidubce.com/rest/2.0/face/v4/idmatch_date';
+    private $faceVerifyDateV4Url = 'https://aip.baidubce.com/rest/2.0/face/v4/verify_date';
+
+    
     /**
      * 人脸检测接口
      *
@@ -535,6 +563,240 @@ class AipFace extends AipBase {
     public function match($images){
 
         return $this->request($this->matchUrl, json_encode($images), array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+
+    /**
+     * 人脸 - 人脸实名认证V4
+     * 基于姓名和身份证号，调取公安权威数据源人脸图，将当前获取的人脸图片，与此公安数据源人脸图进行对比，得出比对分数，并基于此进行业务判断是否为同一人
+     * @param idCardNumber  身份证件号
+     * @param name  姓名(需要是 utf8 编码)
+     * @param image  图片信息(数据大小应小于10M 分辨率应小于1920*1080)，5.2版本SDK请求时已包含在加密数据data中，无需额外传入
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @return array
+     */
+    public function faceMingJingVerify($idCardNumber, $name, $image, $options=array()){
+
+        $data = array();
+        if ($options != null) {
+            $data = array_merge($data, $options);
+        }
+
+        $data['id_card_number'] = $idCardNumber;
+        $data['name'] = $name;
+        $data['image'] = $image;
+
+        return $this->request($this->verifyUrl, json_encode($data), array('Content-Type' => 'application/json;charset=utf-8'));
+    }
+
+
+    /**
+     * 人脸 - 人脸对比V4
+     * 用于比对多张图片中的人脸相似度并返回两两比对的得分，可用于判断两张脸是否是同一人的可能性大小
+     * @param image  图片信息(数据大小应小于10M 分辨率应小于1920*1080)，5.2版本SDK请求时已包含在加密数据data中，无需额外传入
+     * @param imageType  图片类型
+     * @param registerImage  图片信息(总数据大小应小于10M)，图片上传方式根据image_type来判断。本图片特指客户服务器上传图片，非加密图片Base64值   
+     * @param registerImageType  图片类型             
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @return array
+     */
+    public function faceMingJingMatch($image, $imageType, $registerImage, $registerImageType, $options=array()){
+
+        $data = array();
+        if ($options != null) {
+            $data = array_merge($data, $options);
+        }
+
+        $data['image'] = $image;
+        $data['image_type'] = $imageType;
+        $data['register_image'] = $registerImage;
+        $data['register_image_type'] = $registerImageType;
+
+        return $this->request($this->faceMatchV4Url, json_encode($data), array('Content-Type' => 'application/json;charset=utf-8'));
+    }
+
+
+    /**
+     * 人脸 - 在线图片活体V4
+     * 基于单张图片，判断图片中的人脸是否为二次翻拍
+     * @param sdkVersion  sdk版本
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @return array
+     */
+    public function onlinePictureLiveV4($sdkVersion, $options=array()){
+
+        $data = array();
+        if ($options != null) {
+            $data = array_merge($data, $options);
+        }
+
+        $data['sdk_version'] = $sdkVersion;
+
+        return $this->request($this->onlinePictureLiveUrlV4, json_encode($data), array('Content-Type' => 'application/json;charset=utf-8'));
+    }
+
+    /**
+     * H5视频活体检测
+     * 接口使用文档: https://ai.baidu.com/ai-doc/FACE/lk37c1tag#12-%E8%A7%86%E9%A2%91%E6%B4%BB%E4%BD%93%E6%A3%80%E6%B5%8B%E6%8E%A5%E5%8F%A3
+     */
+    public function facelivenessVerifyV1($videoBase64, $options=array()) {
+        $data = array();
+        if ($options != null) {
+            $data = array_merge($data, $options);
+        }
+        $data['video_base64'] = $videoBase64;
+        return $this->request($this->facelivenessVerifyV1Url, $data, array('Content-Type' => 'application/json'));
+    }
+
+    /**
+     * 身份证与名字比对
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/Tkqahnjtk
+     */
+    public function facePersonIdmatchV3($idCardNumber, $name){
+        $data = array();
+        $data['id_card_number'] = $idCardNumber;
+        $data['name'] = $name;
+        return $this->request($this->facePersonIdmatchV3Url, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * 人脸融合
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/5k37c1ti0
+     */
+    public function faceMergeV1($imageTemplate, $imageTarget, $options=array()){
+        $data = array();
+        $data['image_template'] = $imageTemplate;
+        $data['image_target'] = $imageTarget;
+        $data = array_merge($data, $options);
+        return $this->request($this->faceMergeV1Url, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * 人脸属性编辑
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/vk6rm5lj5
+     */
+    public function faceSkinSmoothV1($image, $imageType, $actionType, $options=array()){
+        $data = array();
+        $data['image'] = $image;
+        $data['image_type'] = $imageType;
+        $data['action_type'] = $actionType;
+        $data = array_merge($data, $options);
+        return $this->request($this->faceSkinSmoothV1Url, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * 人脸关键点检测
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/sk8a5xewt
+     */
+    public function faceLandmarkV1($image, $imageType, $options=array()){
+        $data = array();
+        $data['image'] = $image;
+        $data['image_type'] = $imageType;
+        $data = array_merge($data, $options);
+        return $this->request($this->faceLandmarkV1Url, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * 场景化（人脸注册）
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/Aknhmx6hi#%E4%BA%BA%E8%84%B8%E5%BA%93%E7%AE%A1%E7%90%86%EF%BC%88%E5%9C%BA%E6%99%AF%E5%8C%96%EF%BC%89-%E4%BA%BA%E8%84%B8%E6%B3%A8%E5%86%8C
+     */
+    public function faceSceneFacesetUserAdd($image, $imageType, $groupId, $userId, $sceneType, $options=array()){
+        $data = array();
+        $data['image'] = $image;
+        $data['image_type'] = $imageType;
+        $data['group_id'] = $groupId;
+        $data['user_id'] = $userId;
+        $data['scene_type'] = $sceneType;
+        $data = array_merge($data, $options);
+        return $this->request($this->faceSceneFacesetUserAddUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * 场景化（人脸更新）
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/Aknhmx6hi#%E4%BA%BA%E8%84%B8%E5%BA%93%E7%AE%A1%E7%90%86%EF%BC%88%E5%9C%BA%E6%99%AF%E5%8C%96%EF%BC%89-%E4%BA%BA%E8%84%B8%E6%9B%B4%E6%96%B0
+     */
+    public function faceSceneFacesetUserUpdate($image, $imageType, $groupId, $userId, $sceneType, $options=array()){
+        $data = array();
+        $data['image'] = $image;
+        $data['image_type'] = $imageType;
+        $data['group_id'] = $groupId;
+        $data['user_id'] = $userId;
+        $data['scene_type'] = $sceneType;
+        $data = array_merge($data, $options);
+        return $this->request($this->faceSceneFacesetUserUpdateUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * 场景化（创建用户组）
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/Aknhmx6hi#%E4%BA%BA%E8%84%B8%E5%BA%93%E7%AE%A1%E7%90%86%EF%BC%88%E5%9C%BA%E6%99%AF%E5%8C%96%EF%BC%89-%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7%E7%BB%84
+     */
+    public function faceSceneFacesetGroupAdd($groupId, $sceneType){
+        $data = array();
+        $data['group_id'] = $groupId;
+        $data['scene_type'] = $sceneType;
+        return $this->request($this->faceSceneFacesetGroupAddUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * 场景化（1：N识别）
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/Aknhmx6hi
+     */
+    public function faceCaptureSearch($image, $imageType, $groupIdList, $options=array()){
+        $data = array();
+        $data['image'] = $image;
+        $data['image_type'] = $imageType;
+        $data['group_id_list'] = $groupIdList;
+        $data = array_merge($data, $options);
+        return $this->request($this->faceCaptureSearchUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * 身份证信息及有效期核验接口
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/elav5puig
+     */
+    public function faceIdmatchDateV4($name, $idCardNumber, $startDate, $endDate){
+        $data = array();
+        $data['name'] = $name;
+        $data['id_card_number'] = $idCardNumber;
+        $data['start_date'] = $startDate;
+        $data['end_date'] = $endDate;
+        return $this->request($this->faceIdmatchDateV4Url, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+
+    /**
+     * 人脸实名信息及有效期核验
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/FACE/qlav5rwms
+     */
+    public function faceVerifyDateV4($name, $idCardNumber, $startDate, $endDate, $image, $imageType, $options=array()) {
+        $data = array();
+        $data['name'] = $name;
+        $data['id_card_number'] = $idCardNumber;
+        $data['start_date'] = $startDate;
+        $data['end_date'] = $endDate;
+        $data['image'] = $image;
+        $data['image_type'] = $imageType;
+        $data = array_merge($data, $options);
+        return $this->request($this->faceVerifyDateV4Url, json_encode($data),  array(
             'Content-Type' => 'application/json',
         ));
     }

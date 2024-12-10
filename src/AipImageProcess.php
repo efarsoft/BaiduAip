@@ -14,7 +14,6 @@
 * License for the specific language governing permissions and limitations under
 * the License.
 */
-
 namespace BaiduAip;
 use BaiduAip\lib\AipBase;
 class AipImageProcess extends AipBase {
@@ -80,14 +79,20 @@ class AipImageProcess extends AipBase {
      */
     private $skySeg = "https://aip.baidubce.com/rest/2.0/image-process/v1/sky_seg";
 
+    /**
+     * @var string 图像色彩增强
+     */
+    private $colorEnhanceUrl = "https://aip.baidubce.com/rest/2.0/image-process/v1/color_enhance";
+
+    private $removeMoireV1Url = 'https://aip.baidubce.com/rest/2.0/image-process/v1/remove_moire';
+    private $customizeStylizationV1Url = 'https://aip.baidubce.com/rest/2.0/image-process/v1/customize_stylization';
+    private $docRepairV1Url = 'https://aip.baidubce.com/rest/2.0/image-process/v1/doc_repair';
+    private $denoiseV1Url = 'https://aip.baidubce.com/rest/2.0/image-process/v1/denoise';
+
 
     /**
      * 图像无损放大接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/ok3bclnkg
      */
     public function imageQualityEnhance($image, $options=array()){
 
@@ -102,11 +107,7 @@ class AipImageProcess extends AipBase {
 
     /**
      * 图像去雾接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/8k3bclp1l
      */
     public function dehaze($image, $options=array()){
 
@@ -121,11 +122,7 @@ class AipImageProcess extends AipBase {
 
     /**
      * 图像对比度增强接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/ek3bclnzn
      */
     public function contrastEnhance($image, $options=array()){
 
@@ -140,11 +137,7 @@ class AipImageProcess extends AipBase {
 
     /**
      * 黑白图像上色接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Bk3bclns3
      */
     public function colourize($image, $options=array()){
 
@@ -159,11 +152,7 @@ class AipImageProcess extends AipBase {
 
     /**
      * 拉伸图像恢复接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Rk3bclp97
      */
     public function stretchRestore($image, $options=array()){
 
@@ -179,11 +168,7 @@ class AipImageProcess extends AipBase {
 
     /**
      * 人像动漫化
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Mk4i6olx5
      */
     public function selfieAnime($image, $options=array()){
 
@@ -199,11 +184,7 @@ class AipImageProcess extends AipBase {
 
     /**
      * 图像清晰度增强
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/5k4i6mzqk
      */
     public function imageDefinitionEnhance($image, $options=array()){
 
@@ -219,11 +200,7 @@ class AipImageProcess extends AipBase {
 
     /**
      * 图像风格转换
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/xk3bclo77
      */
     public function __styleTrans($image, $options=array()){
 
@@ -239,11 +216,7 @@ class AipImageProcess extends AipBase {
 
     /**
      * 天空分割
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Xk8a1ajdw
      */
     public function skySeg($image, $options=array()){
 
@@ -259,11 +232,7 @@ class AipImageProcess extends AipBase {
 
     /**
      * 图像修复
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/ok3bclome
      */
     public function inpaintingByMask($image, $rectangle, $options=array()){
 
@@ -274,7 +243,138 @@ class AipImageProcess extends AipBase {
 
         $data = array_merge($data, $options);
 
-        return $this->request($this->inpainting, $data);
+        return $this->request($this->inpainting, json_encode($data));
     }
+
+    /**
+     * 图像色彩增强
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Tk9l4kll7
+     */
+    public function colorEnhance($image, $options=array()) {
+        $data = array();
+
+        $data['image'] = base64_encode($image);
+        $data = array_merge($data, $options);
+
+        return $this->request($this->colorEnhanceUrl, $data);
+    }
+
+    /**
+     * 图像色彩增强
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Tk9l4kll7
+     */
+    public function colorEnhanceUrl($url, $options=array())
+    {
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['url'] = $url;
+
+        return $this->request($this->colorEnhanceUrl, $data);
+    }
+
+    /**
+     * 图片去摩尔纹
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/ql4wdlnc0
+     */
+    public function removeMoireV1($image, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data = array_merge($data, $options);
+        return $this->request($this->removeMoireV1Url, $data);
+    }
+
+    /**
+     * 图片去摩尔纹 - url
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/ql4wdlnc0
+     */
+    public function removeMoireV1Url($url, $options=array()){
+        $data = array();
+        $data['url'] = $url;
+        $data = array_merge($data, $options);
+        return $this->request($this->removeMoireV1Url, $data);
+    }
+
+
+    /**
+     * 图片去摩尔纹 - pdf
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/ql4wdlnc0
+     */
+    public function removeMoireV1Pdf($pdf, $options=array()){
+        $data = array();
+        $data['pdf_file'] = base64_encode($pdf);
+        $data = array_merge($data, $options);
+        return $this->request($this->removeMoireV1Url, $data);
+    }
+
+
+    /**
+     * 图像风格自定义
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/al50vf6bq
+     */
+    public function customizeStylizationV1($image, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data = array_merge($data, $options);
+        return $this->request($this->customizeStylizationV1Url, $data);
+    }
+
+    /**
+     * 图像风格自定义 - url
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/al50vf6bq
+     */
+    public function customizeStylizationV1Url($url, $options=array()){
+        $data = array();
+        $data['url'] = $url;
+        $data = array_merge($data, $options);
+        return $this->request($this->customizeStylizationV1Url, $data);
+    }
+
+    /**
+     * 文档图片去底纹
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Nl6os53ab
+     */
+    public function docRepairV1($image, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data = array_merge($data, $options);
+        return $this->request($this->docRepairV1Url, $data);
+    }
+
+    /**
+     * 文档图片去底纹 - url
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Nl6os53ab
+     */
+    public function docRepairV1Url($url, $options=array()){
+        $data = array();
+        $data['url'] = $url;
+        $data = array_merge($data, $options);
+        return $this->request($this->docRepairV1Url, $data);
+    }
+
+    /**
+     * 图像去噪
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Tl78sby7g
+     */
+    public function denoiseV1($image, $option, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data['option'] = $option;
+        $data = array_merge($data, $options);
+        return $this->request($this->denoiseV1Url, $data);
+    }
+
+    /**
+     * 图像去噪 - url
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGEPROCESS/Tl78sby7g
+     */
+    public function denoiseV1Url($url, $option, $options=array()){
+        $data = array();
+        $data['url'] = $url;
+        $data['option'] = $option;
+        $data = array_merge($data, $options);
+        return $this->request($this->denoiseV1Url, $data);
+    }
+
 
 }

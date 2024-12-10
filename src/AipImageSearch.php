@@ -14,10 +14,37 @@
 * License for the specific language governing permissions and limitations under
 * the License.
 */
-
 namespace BaiduAip;
 use BaiduAip\lib\AipBase;
 class AipImageSearch extends AipBase {
+
+
+    /**
+     * 面料图片搜索—入库 materiel_add api url
+     * @var string
+     */
+    private $materielAddUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/materiel/add';
+
+    /**
+     * 面料图片搜索—检索 materiel_search api url
+     * @var string
+     */
+    private $materielSearchUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/materiel/search';
+
+
+     /**
+     * 面料图片搜索—更新 materiel_update api url
+     * @var string
+     */
+    private $materielUpdateUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/materiel/update';
+
+
+     /**
+     * 面料图片搜索—删除 materiel_delete api url
+     * @var string
+     */
+    private $materielDeleteUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/materiel/delete';
+
 
     /**
      * 相同图检索—入库 same_hq_add api url
@@ -117,8 +144,165 @@ class AipImageSearch extends AipBase {
     private $picturebookUpdate = "https://aip.baidubce.com/rest/2.0/imagesearch/v1/realtime_search/picturebook/update";
 
 
+    /**
+     * 面料图片搜索—入库接口
+     * 官网参考：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E5%85%A5%E5%BA%93
+     */
+    public function materielAdd($image, $brief, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+        $data['brief'] = $brief;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielAddUrl, $data);
+    }
 
 
+    /**
+     * 面料图片搜索—入库接口
+     * 官网参考：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E5%85%A5%E5%BA%93
+     */
+    public function materielAddUrl($url, $brief, $options=array()){
+
+        $data = array();
+        
+        $data['url'] = $url;
+        $data['brief'] = $brief;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielAddUrl, $data);
+    }
+
+
+    /**
+     * 面料图片检索—检索接口
+     * 参考文档：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E6%A3%80%E7%B4%A2
+     */
+    public function materielSearch($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielSearchUrl, $data);
+    }
+
+    /**
+     * 面料图片检索—检索接口
+     * 参考文档：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E6%A3%80%E7%B4%A2
+     */
+    public function materielSearchUrl($url, $options=array()){
+
+        $data = array();
+        
+        $data['url'] = $url;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielSearchUrl, $data);
+    }
+
+
+    /**
+     * 面料图片搜索—更新接口
+     * 参考文档：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E6%9B%B4%E6%96%B0
+     */
+    public function materielUpdate($image, $brief, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+        $data['brief'] = $brief;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielUpdateUrl, $data);
+    }
+
+    /**
+     * 面料图片搜索—更新接口
+     * 参考文档：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E6%9B%B4%E6%96%B0
+     */
+    public function materielUpdateUrl($url, $brief,$options=array()){
+
+        $data = array();
+        
+        $data['url'] = $url;
+        $data['brief'] = $brief;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielUpdateUrl, $data);
+    }
+
+    /**
+     * 面料图片搜索—更新接口
+     * 参考文档：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E6%9B%B4%E6%96%B0
+     */
+    public function materielUpdateContSign($contSign, $brief,$options=array()){
+
+        $data = array();
+        
+        $data['cont_sign'] = $contSign;
+        $data['brief'] = $brief;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielUpdateUrl, $data);
+    }
+
+
+    /**
+     * 面料图片搜索—删除接口
+     * 参考文档：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E5%88%A0%E9%99%A4
+     */
+    public function materielDeleteByImage($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielDeleteUrl, $data);
+    }
+
+    /**
+     * 面料图片搜索—删除接口
+     * 参考文档：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E5%88%A0%E9%99%A4
+     */
+    public function materielDeleteByUrl($url, $options=array()){
+
+        $data = array();
+        
+        $data['url'] = $url;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielDeleteUrl, $data);
+    }
+
+    /**
+     * 面料图片搜索—删除接口
+     * 参考文档：https://ai.baidu.com/ai-doc/IMAGESEARCH/kl6xkl6kq#%E9%9D%A2%E6%96%99%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E5%88%A0%E9%99%A4
+     */
+    public function materielDeleteBySign($contSign, $options=array()){
+
+        $data = array();
+        
+        $data['cont_sign'] = $contSign;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->materielDeleteUrl, $data);
+    }
+   
     /**
      * 相同图检索—入库接口
      *

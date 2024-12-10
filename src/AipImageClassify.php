@@ -19,6 +19,26 @@ use BaiduAip\lib\AipBase;
 class AipImageClassify extends AipBase {
 
     /**
+     * @var string
+     */
+    private $trafficFlowUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/traffic_flow';
+
+    /**
+     * @var string
+     */
+    private $vehicleSegUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/vehicle_seg';
+
+    /**
+     * @var string
+     */
+    private $vehicleDetectHighUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/vehicle_detect_high';
+
+    /**
+     * @var string
+     */
+    private $vehicleAttrUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/vehicle_attr';
+
+    /**
      * 通用物体识别 advanced_general api url
      * @var string
      */
@@ -140,16 +160,17 @@ class AipImageClassify extends AipBase {
      */
     private $combinationUrl = "https://aip.baidubce.com/api/v1/solution/direct/imagerecognition/combination";
 
+    private $redwineAddV1Url = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/redwine/add';
+    private $redwineSearchV1Url = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/redwine/search';
+    private $redwineDeleteV1Url = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/redwine/delete';
+    private $redwineUpdateV1Url = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/redwine/update';
+    private $vehicleAttrClassifyV2Url = 'https://aip.baidubce.com/rest/2.0/image-classify/v2/vehicle_attr';
+
 
 
     /**
      * 通用物体识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     *   baike_num 返回百科信息的结果数，默认不返回
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Xk3bcxe21
      */
     public function advancedGeneral($image, $options=array()){
 
@@ -164,14 +185,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 菜品识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     *   top_num 返回预测得分top结果数，默认为5
-     *   filter_threshold 默认0.95，可以通过该参数调节识别效果，降低非菜识别率.
-     *   baike_num 返回百科信息的结果数，默认不返回
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/tk3bcxbb0
      */
     public function dishDetect($image, $options=array()){
 
@@ -185,14 +199,8 @@ class AipImageClassify extends AipBase {
     }
 
     /**
-     * 车辆识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     *   top_num 返回预测得分top结果数，默认为5
-     *   baike_num 返回百科信息的结果数，默认不返回
-     * @return array
+     * 车型识别接口
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/tk3hb3eiv
      */
     public function carDetect($image, $options=array()){
 
@@ -207,13 +215,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 车辆检测接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     *   show 是否返回结果图（含统计值和跟踪框）。选true时返回渲染后的图片(base64)，其它无效值或为空则默认false。
-     *   area 只统计该区域内的车辆数，缺省时为全图统计。<br>逗号分隔，如‘x1,y1,x2,y2,x3,y3...xn,yn'，按顺序依次给出每个顶点的x、y坐标（默认尾点和首点相连），形成闭合多边形区域。<br>服务会做范围（顶点左边需在图像范围内）及个数校验（数组长度必须为偶数，且大于3个顶点）。只支持单个多边形区域，建议设置矩形框，即4个顶点。**坐标取值不能超过图像宽度和高度，比如1280的宽度，坐标值最大到1279**。
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/rk3hb3flg
      */
     public function vehicleDetect($image, $options=array()){
 
@@ -228,11 +230,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 车辆外观损伤识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/fk3hb3f5w
      */
     public function vehicleDamage($image, $options=array()){
 
@@ -247,12 +245,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * logo商标识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     *   custom_lib 是否只使用自定义logo库的结果，默认false：返回自定义库+默认库的识别结果
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Ok3bcxc59
      */
     public function logoSearch($image, $options=array()){
 
@@ -267,11 +260,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * logo商标识别—添加接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param string $brief - brief，检索时带回。此处要传对应的name与code字段，name长度小于100B，code长度小于150B
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Ok3bcxc59
      * @return array
      */
     public function logoAdd($image, $brief, $options=array()){
@@ -288,11 +277,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * logo商标识别—删除接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Ok3bcxc59
      */
     public function logoDeleteByImage($image, $options=array()){
 
@@ -307,11 +292,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * logo商标识别—删除接口
-     *
-     * @param string $contSign - 图片签名（和image二选一，image优先级更高）
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Ok3bcxc59
      */
     public function logoDeleteBySign($contSign, $options=array()){
 
@@ -326,13 +307,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 动物识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     *   top_num 返回预测得分top结果数，默认为6
-     *   baike_num 返回百科信息的结果数，默认不返回
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Zk3bcxdfr
      */
     public function animalDetect($image, $options=array()){
 
@@ -347,12 +322,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 植物识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     *   baike_num 返回百科信息的结果数，默认不返回
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Mk3bcxe9i
      */
     public function plantDetect($image, $options=array()){
 
@@ -367,12 +337,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 图像主体检测接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     *   with_face 如果检测主体是人，主体区域是否带上人脸部分，0-不带人脸区域，其他-带人脸区域，裁剪类需求推荐带人脸，检索/识别类需求推荐不带人脸。默认取1，带人脸。
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Xk3bcxdum
      */
     public function objectDetect($image, $options=array()){
 
@@ -387,11 +352,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 地标识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/jk3bcxbih
      */
     public function landmark($image, $options=array()){
 
@@ -407,7 +368,7 @@ class AipImageClassify extends AipBase {
     /**
      * 花卉识别接口
      *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param string $image - 图像数据，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      *   top_num 返回预测得分top结果数，默认为5
@@ -428,7 +389,7 @@ class AipImageClassify extends AipBase {
     /**
      * 食材识别接口
      *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param string $image - 图像数据，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      *   top_num 返回预测得分top结果数，如果为空或小于等于0默认为5；如果大于20默认20
@@ -447,11 +408,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 红酒识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Tk3bcxctf
      */
     public function redwine($image, $options=array()){
 
@@ -466,11 +423,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 货币识别接口
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/pk3bcxavy
      */
     public function currency($image, $options=array()){
 
@@ -485,11 +438,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 自定义菜品识别—入库
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Sk3bcxcd0
      */
     public function customDishesAddImage($image, $brief, $options=array()){
 
@@ -507,11 +456,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 自定义菜品识别—检索
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Sk3bcxcd0
      */
     public function customDishesSearch($image, $options=array()){
 
@@ -526,11 +471,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 自定义菜品识别—删除
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Sk3bcxcd0
      */
     public function customDishesDeleteImage($image, $options=array()){
 
@@ -547,11 +488,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 自定义菜品识别—删除
-     *
-     * @param string $image - 图像数据签名
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Sk3bcxcd0
      */
     public function customDishesDeleteContSign($contSign, $options=array()){
 
@@ -568,11 +505,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 图像多主体检测
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Wk7em3moi
      */
     public function multiObjectDetect($image, $options=array()){
 
@@ -589,11 +522,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 组合接口-image
-     *
-     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Kkbg3gxs7
      */
     public function combinationByImage($image, $scenes, $options=array()){
 
@@ -611,11 +540,7 @@ class AipImageClassify extends AipBase {
 
     /**
      * 组合接口-imageUrl
-     *
-     * @param string $imageURl - 图像数据url
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/Kkbg3gxs7
      */
     public function combinationByImageUrl($imageUrl, $scenes, $options=array()){
 
@@ -630,5 +555,274 @@ class AipImageClassify extends AipBase {
     }
 
 
+
+
+    /**
+     * 车辆属性识别
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/mk3hb3fde
+     */
+    public function vehicleAttr($image, $options=array()){
+
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['image'] = base64_encode($image);
+
+        return $this->request($this->vehicleAttrUrl, $data);
+    }
+
+
+    /**
+     * 车辆属性识别
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/mk3hb3fde
+     */
+    public function vehicleAttrUrl($url, $options=array()){
+
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['url'] = $url;
+
+        return $this->request($this->vehicleAttrUrl, $data);
+    }
+
+
+    /**
+     * 车辆检测-高空版
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/Dk50qg8mm
+     */
+    public function vehicleDetectHigh($image, $options=array()){
+
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['image'] = base64_encode($image);
+
+        return $this->request($this->vehicleDetectHighUrl, $data);
+    }
+
+
+    /**
+     * 车辆检测-高空版
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/Dk50qg8mm
+     */
+    public function vehicleDetectHighUrl($url, $options=array()){
+
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['url'] = $url;
+
+        return $this->request($this->vehicleDetectHighUrl, $data);
+    }
+
+
+    /**
+     * 车型识别
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/tk3hb3eiv
+     */
+    public function carDetectUrl($url, $options=array()){
+
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['url'] = $url;
+
+        return $this->request($this->carDetectUrl, $data);
+    }
+
+
+    /**
+     * 车辆检测
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/rk3hb3flg
+     */
+    public function vehicleDetectUrl($url, $options=array()){
+
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['url'] = $url;
+
+        return $this->request($this->vehicleDetectUrl, $data);
+    }
+
+
+    /**
+     * 车辆分割
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/dk3hb3eyf
+     */
+    public function vehicleSeg($image, $options=array()){
+
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['image'] = base64_encode($image);
+
+        return $this->request($this->vehicleSegUrl, $data);
+    }
+
+
+    /**
+     * 车流统计
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/yk3hb3eqk
+     */
+    public function trafficFlow($image, $case_id, $case_init, $area, $options=array()){
+
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['image'] = base64_encode($image);
+        $data['case_id'] = $case_id;
+        $data['case_init'] = $case_init;
+        $data['area'] = $area;
+
+        return $this->request($this->trafficFlowUrl, $data);
+    }
+
+
+    /**
+     * 车流统计
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/VEHICLE/yk3hb3eqk
+     */
+    public function trafficFlowUrl($url, $case_id, $case_init, $area, $options=array()){
+
+        $data = array();
+
+        $data = array_merge($data, $options);
+        $data['url'] = $url;
+        $data['case_id'] = $case_id;
+        $data['case_init'] = $case_init;
+        $data['area'] = $area;
+
+        return $this->request($this->trafficFlowUrl, $data);
+    }
+
+    /**
+     * 自定义红酒识别--入库
+     * 接口使用说明: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/skh4k58o4#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E9%85%92-%E5%85%A5%E5%BA%93
+     */
+    public function redwineAddV1ByImage($image, $brief, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data['brief'] = $brief;
+        $data = array_merge($data, $options);
+        return $this->request($this->redwineAddV1Url, $data);
+    }
+
+    /**
+     * 自定义红酒识别--入库
+     * 接口使用说明: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/skh4k58o4#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E9%85%92-%E5%85%A5%E5%BA%93
+     */
+    public function redwineAddV1ByUrl($url, $brief, $options=array()){
+        $data = array();
+        $data['url'] = $url;
+        $data['brief'] = $brief;
+        $data = array_merge($data, $options);
+        return $this->request($this->redwineAddV1Url, $data);
+    }
+
+    /**
+     * 自定义红酒识别--检索
+     * 接口使用说明: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/skh4k58o4#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E9%85%92-%E6%A3%80%E7%B4%A2
+     */
+    public function redwineSearchV1ByImage($image, $custom_lib, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data['custom_lib'] = $custom_lib;
+        $data = array_merge($data, $options);
+        return $this->request($this->redwineSearchV1Url, $data);
+    }
+
+    /**
+     * 自定义红酒识别--检索
+     * 接口使用说明: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/skh4k58o4#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E9%85%92-%E6%A3%80%E7%B4%A2
+     */
+    public function redwineSearchV1ByUrl($url, $custom_lib, $options=array()){
+        $data = array();
+        $data['url'] = $url;
+        $data['custom_lib'] = $custom_lib;
+        $data = array_merge($data, $options);
+        return $this->request($this->redwineSearchV1Url, $data);
+    }
+
+    /**
+     * 自定义红酒识别--删除
+     * 接口使用说明: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/skh4k58o4#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E9%85%92-%E5%88%A0%E9%99%A4
+     */
+    public function redwineDeleteV1ByImage($image, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data = array_merge($data, $options);
+        return $this->request($this->redwineDeleteV1Url, $data);
+    }
+
+    /**
+     * 自定义红酒识别--删除
+     * 接口使用说明: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/skh4k58o4#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E9%85%92-%E5%88%A0%E9%99%A4
+     */
+    public function redwineDeleteV1BySign($sign, $options=array()){
+        $data = array();
+        $data['cont_sign_list'] = $sign;
+        $data = array_merge($data, $options);
+        return $this->request($this->redwineDeleteV1Url, $data);
+    }
+
+    /**
+     * 自定义红酒识别--更新
+     * 接口使用说明: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/skh4k58o4#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E9%85%92%E6%9B%B4%E6%96%B0
+     */
+    public function redwineUpdateV1($image, $brief, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data['brief'] = $brief;
+        $data = array_merge($data, $options);
+        return $this->request($this->redwineUpdateV1Url, $data);
+    }
+
+    /**
+     * 自定义红酒识别--更新
+     * 接口使用说明: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/skh4k58o4#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E9%85%92%E6%9B%B4%E6%96%B0
+     */
+    public function redwineUpdateV1ByImage($image, $brief, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data['brief'] = $brief;
+        $data = array_merge($data, $options);
+        return $this->request($this->redwineUpdateV1Url, $data);
+    }
+
+    /**
+     * 自定义红酒识别--更新
+     * 接口使用说明: https://ai.baidu.com/ai-doc/IMAGERECOGNITION/skh4k58o4#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%A2%E9%85%92%E6%9B%B4%E6%96%B0
+     */
+    public function redwineUpdateV1ByUrl($url, $brief, $options=array()){
+        $data = array();
+        $data['url'] = $url;
+        $data['brief'] = $brief;
+        $data = array_merge($data, $options);
+        return $this->request($this->redwineUpdateV1Url, $data);
+    }
+
+    /**
+     * 车辆属性识别
+     * 接口使用说明: https://ai.baidu.com/ai-doc/VEHICLE/mk3hb3fde
+     */
+    public function vehicleAttrClassifyV2ByImage($image, $options=array()){
+        $data = array();
+        $data['image'] = base64_encode($image);
+        $data = array_merge($data, $options);
+        return $this->request($this->vehicleAttrClassifyV2Url, $data);
+    }
+
+    /**
+     * 车辆属性识别
+     * 接口使用说明: https://ai.baidu.com/ai-doc/VEHICLE/mk3hb3fde
+     */
+    public function vehicleAttrClassifyV2ByUrl($url, $options=array()){
+        $data = array();
+        $data['url'] = $url;
+        $data = array_merge($data, $options);
+        return $this->request($this->vehicleAttrClassifyV2Url, $data);
+    }
 
 }

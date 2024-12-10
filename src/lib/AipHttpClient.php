@@ -15,25 +15,25 @@
 * the License.
 */
 namespace BaiduAip\lib;
-
+use Exception;
 /**
  * Http Client
  */
 class AipHttpClient{
+    protected $headers;
+    protected $connectTimeout;
+    protected $socketTimeout;
+    protected $conf;
 
-    protected $headers =[];
-    protected $connectTimeout =60000 ;
-    protected $socketTimeout =60000 ;
-    protected $conf =[];
     /**
      * HttpClient
      * @param array $headers HTTP header
      */
-    public function __construct($headers=[]){
+    public function __construct($headers=array()){
         $this->headers = $this->buildHeaders($headers);
         $this->connectTimeout = 60000;
         $this->socketTimeout = 60000;
-        $this->conf = [];
+        $this->conf = array();
     }
 
     /**
@@ -62,7 +62,7 @@ class AipHttpClient{
 
     /**
      * 请求预处理
-     * @param resource $ch
+     * @param \CurlHandle $ch
      */
     public function prepare($ch){
         foreach($this->conf as $key => $value){

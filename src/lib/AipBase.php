@@ -16,6 +16,10 @@
 */
 namespace BaiduAip\lib;
 use Exception;
+use BaiduAip\lib\AipHttpClient;
+use BaiduAip\lib\AipBCEUtil;
+
+
 
 /**
  * Aip Base 基类
@@ -52,32 +56,15 @@ class AipBase {
      */
     protected $secretKey = '';
 
-    /**
-     * isCloudUser
-     * @var string
-     */
-    protected $isCloudUser =  null;
 
-    /**
-     * client
-     * @var AipHttpClient
-     */
-    protected $client    = null;
-
-    /**
-     * 版本号
-     * @var string
-     */
-    protected $version = '2_2_20';
-
-    /**
-     * 代理
-     * @var array
-     */
-    protected $proxies = [];
+    protected $isCloudUser = null;
 
 
+    protected  $client;
 
+    protected $version;
+
+    protected $proxies;
     /**
      * 权限
      * @var array
