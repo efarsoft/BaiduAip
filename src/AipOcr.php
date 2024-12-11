@@ -107,6 +107,13 @@ class AipOcr extends AipBase
      */
     private $businessLicenseUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/business_license';
 
+
+     /**
+     * 开户许可证照识别 account_opening api url
+     * @var string
+     */
+    private $bankAccountOpening = 'https://aip.baidubce.com/rest/2.0/ocr/v1/account_opening';
+
     /**
      * 通用票据识别 receipt api url
      * @var string
@@ -856,6 +863,60 @@ class AipOcr extends AipBase
         $data = array_merge($data, $options);
 
         return $this->request($this->businessLicenseUrl, $data);
+    }
+
+
+
+     /**
+     * 营业执照识别接口
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/OCR/sk3h7y3zs
+     */
+    public function businessLicenseUrl($image, $options = array())
+    {
+
+        $data = array();
+
+        $data['url'] = $image;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->businessLicenseUrl, $data);
+    }
+
+
+
+
+     /**
+     * 开户许可证识别
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/OCR/7lsb7obsj
+     */
+    public function accountOpening($image, $options = array())
+    {
+
+        $data = array();
+
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->bankAccountOpening, $data);
+    }
+
+    
+     /**
+     * 开户许可证识别
+     * 接口使用说明文档: https://ai.baidu.com/ai-doc/OCR/7lsb7obsj
+     */
+    public function accountOpeningUrl($image, $options = array())
+    {
+
+        $data = array();
+
+        $data['url'] = $image;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->bankAccountOpening, $data);
     }
 
     /**

@@ -59,12 +59,11 @@ class AipBase {
 
     protected $isCloudUser = null;
 
+    protected $client;
 
-    protected  $client;
+    protected string $version = '2_2_20';
 
-    protected $version;
-
-    protected $proxies;
+    protected array $proxies = [];
     /**
      * 权限
      * @var array
